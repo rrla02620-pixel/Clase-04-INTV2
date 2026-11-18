@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard financiero · Ventas tecnología 2022</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1b2330;--mu:#5b6676;--bd:#e2e6ec;--ac:#2563eb;--ok:#0f9d73;--wa:#e08a00;--lo:#d6453d}
+@media(prefers-color-scheme:dark){:root{--bg:#10141b;--card:#181e28;--tx:#e8ecf3;--mu:#98a2b3;--bd:#2a3342;--ac:#6b9bff;--ok:#2fc79a;--wa:#f0a93a;--lo:#ef6b63}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{padding:28px 20px 8px;max-width:1100px;margin:auto}h1{margin:0;font-size:26px}header p{margin:4px 0;color:var(--mu)}
+nav{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--bd);z-index:5;padding:8px 20px;display:flex;gap:6px 14px;flex-wrap:wrap;max-width:1100px;margin:auto}
+nav a{color:var(--ac);text-decoration:none;font-size:13px}
+main{max-width:1100px;margin:auto;padding:0 20px 40px}
+section{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px 20px;margin:18px 0}
+h2{margin:0 0 8px;font-size:19px}h3{margin:16px 0 6px;font-size:15px}
+.why{background:rgba(37,99,235,.08);border-left:3px solid var(--ac);padding:8px 12px;border-radius:6px;font-size:13.5px;margin:0 0 14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.k{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 12px}.k b{display:block;font-size:20px}.k span{font-size:12px;color:var(--mu)}
+svg{width:100%;height:auto}.gl{stroke:var(--bd)}.ax{fill:var(--mu);font-size:10.5px}
+.br{fill:var(--ac)}.bp{fill:var(--ac);opacity:.45}.bf{fill:var(--wa);opacity:.75}.er{stroke:var(--tx);stroke-width:1.2;opacity:.6}
+.ln{fill:none;stroke:var(--ok);stroke-width:2.2}.dt{fill:var(--ok)}
+.lg{font-size:12px;color:var(--mu);display:flex;gap:14px;flex-wrap:wrap;margin-top:4px}.lg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px}
+.hr{display:grid;grid-template-columns:150px 1fr 70px;gap:8px;align-items:center;font-size:13px;margin:4px 0}.hb{background:var(--bd);border-radius:4px;height:12px;overflow:hidden}.hb i{display:block;height:100%;background:var(--ac)}.hb i.g{background:var(--ok)}.hv{text-align:right}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:6px 8px;border-bottom:1px solid var(--bd);text-align:left;white-space:nowrap}th{color:var(--mu);font-weight:600}.n{text-align:right}
+.pill{padding:1px 7px;border-radius:10px;background:rgba(15,157,115,.14)}.pill.lo{background:rgba(214,69,61,.16);color:var(--lo)}.pill.hi{background:rgba(15,157,115,.28)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:760px){.g2{grid-template-columns:1fr}.hr{grid-template-columns:110px 1fr 60px}}
+li{margin:5px 0}.sm{font-size:12.5px;color:var(--mu)}input[type=range]{width:220px}
+footer{text-align:center;color:var(--mu);font-size:12px;padding:20px}
+</style></head><body>
+<header><h1>Dashboard financiero de ventas · Industria tecnológica</h1>
+<p id="cov"></p><p class="sm">Cifras en pesos (COP). “M” = millones. “Utilidad bruta” = Ventas − Costo × Cantidad.</p></header>
+<nav><a href="#kpi">Resumen</a><a href="#tend">Tendencia y previsión</a><a href="#prod">Productos</a><a href="#mix">Tipo y marca</a><a href="#cli">Clientes</a><a href="#emp">Vendedores</a><a href="#esc">Escenario</a><a href="#hall">Hallazgos</a><a href="#cal">Calidad de datos</a></nav>
+<main>
+<section id="kpi"><h2>1. Resumen ejecutivo</h2>
+<p class="why"><b>Qué se hizo:</b> se limpió la base y se calcularon los indicadores centrales. <b>Por qué importa:</b> ventas, margen y ticket son el tablero mínimo para saber si el negocio es rentable y qué tan dependiente es de pocos clientes.</p>
+<div class="kpis" id="k"></div></section>
+
+<section id="tend"><h2>2. Tendencia mensual y previsión</h2>
+<p class="why"><b>Qué se hizo:</b> ventas por mes, margen bruto % y una proyección lineal (con banda ±1 desviación) calculada con enero–noviembre. <b>Por qué importa:</b> muestra estacionalidad y si el negocio crece o se frena; la previsión sirve para planear compras e inventario. Con solo 11 meses completos no se puede medir estacionalidad anual: tómala como orientación, no como promesa.</p>
+<div id="c1"></div>
+<div class="lg"><span><i style="background:var(--ac)"></i>Ventas reales</span><span><i style="background:var(--ac);opacity:.45"></i>Diciembre parcial (1–14)</span><span><i style="background:var(--wa)"></i>Previsión ±1σ</span><span><i style="background:var(--ok)"></i>Margen bruto % (eje derecho)</span></div>
+<p id="t1" class="sm"></p></section>
+
+<section id="prod"><h2>3. Rentabilidad por producto (ABC)</h2>
+<p class="why"><b>Qué se hizo:</b> ventas, utilidad, margen y markup por producto, más clasificación ABC (A = primeros 80 % de ventas). <b>Por qué importa:</b> separa los productos que mueven el negocio de los que solo ocupan inventario, y detecta los que venden mucho pero dejan poco margen.</p>
+<div class="tw" id="tp"></div></section>
+
+<section id="mix"><h2>4. Mezcla por tipo y marca</h2>
+<p class="why"><b>Qué se hizo:</b> participación en ventas y margen por tipo de equipo y por marca. <b>Por qué importa:</b> la mezcla explica el margen total; cambiar 5 puntos de mezcla hacia marcas rentables rinde más que subir precios.</p>
+<div class="g2"><div><h3>Participación en ventas</h3><div id="h1"></div></div><div><h3>Margen bruto %</h3><div id="h2"></div></div></div></section>
+
+<section id="cli"><h2>5. Clientes, ciudad y crédito</h2>
+<p class="why"><b>Qué se hizo:</b> ventas, margen, condición de pago y concentración (índice HHI) por cliente. <b>Por qué importa:</b> depender de un cliente y vender casi todo a crédito expone la caja a retrasos de pago.</p>
+<div class="tw" id="tc"></div><p id="t2" class="sm"></p></section>
+
+<section id="emp"><h2>6. Desempeño por vendedor</h2>
+<p class="why"><b>Qué se hizo:</b> ventas y margen por empleado. <b>Por qué importa:</b> permite fijar metas, comisiones por margen (no solo por volumen) y ver quién necesita apoyo.</p>
+<div class="g2"><div><h3>Ventas (M COP)</h3><div id="h3"></div></div><div><h3>Margen bruto %</h3><div id="h4"></div></div></div></section>
+
+<section id="esc"><h2>7. Escenario: utilidad operativa estimada</h2>
+<p class="why"><b>Qué se hizo:</b> un simulador con un supuesto de gastos operativos, porque la base no trae gastos. <b>Por qué importa:</b> el margen bruto no es ganancia; este ajuste muestra cuánto sobrevive después de gastos. El valor inicial es un supuesto, no un dato tuyo.</p>
+<label>Gastos operativos: <b id="gv"></b> de las ventas <input id="gs" type="range" min="0" max="15" step="0.5" value="8"></label>
+<p id="eo"></p></section>
+
+<section id="hall"><h2>8. Hallazgos y acciones sugeridas</h2>
+<p class="why"><b>Qué se hizo:</b> lectura de los resultados anteriores. <b>Por qué importa:</b> convierte números en decisiones.</p><ul id="ins"></ul></section>
+
+<section id="cal"><h2>9. Calidad de datos y límites del análisis</h2>
+<p class="why"><b>Qué se hizo:</b> auditoría de la base original. <b>Por qué importa:</b> una conclusión sobre datos sucios puede ser incorrecta.</p>
+<ul>
+<li><b>Cobertura:</b> 1-ene-2022 a 14-dic-2022 (11,5 meses). Diciembre está incompleto.</li>
+<li><b>Columna “Ingresos”:</b> en realidad es la utilidad bruta (Ventas − Costo × Cantidad; verificado en todas las filas). “Ventas” son los ingresos.</li>
+<li><b>Fila duplicada:</b> PP_1900 aparece dos veces con los mismos valores (una como “Celular Donalis”); se eliminó una.</li>
+<li><b>Correcciones:</b> costo escrito como texto (“3.100.000”), “Celuar”→Celular, “Samsum”→Samsung, “crédito”/“Crédito”, espacios en nombres y tipo de cliente. El producto “A1” aparece una sola vez.</li>
+<li><b>Precio y costo fijos</b> por producto durante todo el año: no se puede medir efecto precio ni inflación de costos.</li>
+<li><b>Cada cliente tiene una sola ciudad, transportadora y condición de pago:</b> no se puede separar el efecto de cada factor.</li>
+<li><b>Empleados:</b> varios figuran en áreas como Compras o Almacén; conviene confirmar si “Empleado” es realmente el vendedor.</li>
+<li><b>No hay</b> gastos operativos, costo de transporte, fechas de cobro ni balance: no se calculan EBITDA, utilidad neta, ROI, liquidez ni días de cartera.</li></ul></section>
+</main>
+<footer>Generado a partir de BaseDatos.xlsx · Sitio estático, sin dependencias externas</footer>
+<script>
+const D={"n0":1901,"n":1900,"dmin":"2022-01-01","dmax":"2022-12-14","tot":{"V":103632777034,"U":16223617274,"Q":24520,"N":1900,"C":87409159760},"mes":[{"mes":"2022-01","V":9738965526,"U":1548066166,"Q":2302,"N":180,"M":0.15896},{"mes":"2022-02","V":7667494170,"U":1210083850,"Q":1846,"N":154,"M":0.15782},{"mes":"2022-03","V":9139607974,"U":1313201894,"Q":2182,"N":162,"M":0.14368},{"mes":"2022-04","V":11045631654,"U":1813784534,"Q":2480,"N":178,"M":0.16421},{"mes":"2022-05","V":13800339040,"U":2252783120,"Q":3194,"N":236,"M":0.16324},{"mes":"2022-06","V":8076808966,"U":1205619366,"Q":2016,"N":164,"M":0.14927},{"mes":"2022-07","V":5985626746,"U":943434346,"Q":1466,"N":114,"M":0.15762},{"mes":"2022-08","V":7802299454,"U":1159634974,"Q":1894,"N":150,"M":0.14863},{"mes":"2022-09","V":7381244630,"U":1198338710,"Q":1764,"N":152,"M":0.16235},{"mes":"2022-10","V":8688965074,"U":1386024914,"Q":2044,"N":162,"M":0.15952},{"mes":"2022-11","V":9978997204,"U":1524078484,"Q":2288,"N":168,"M":0.15273},{"mes":"2022-12","V":4326796596,"U":668566916,"Q":1044,"N":80,"M":0.15452}],"fc":{"V":{"a":9677381163.5,"b":-129912952.0,"sd":2179519188.7,"f":[8248338691.5,8118425739.5,7988512787.5,7858599835.5]},"U":{"a":1522205105.3,"b":-21621923.6,"sd":375742289.5,"f":[1284363945.3,1262742021.6,1241120098.0,1219498174.4]}},"prod":[{"Producto":"Lenovo 14IGL7 ","Tipo":"Portátil","Marca":"Lenovo","V":9897540996,"U":2071540996,"Q":1204,"N":96,"P":8220549.0,"K":6500000.0,"M":0.2093,"S":0.09551},{"Producto":"MacBook Pro","Tipo":"Portátil","Marca":"Apple","V":9468071808,"U":757031808,"Q":1664,"N":94,"P":5689947.0,"K":5235000.0,"M":0.07996,"S":0.09136},{"Producto":"ASUS AIO V","Tipo":"Pc Mesa","Marca":"Asus","V":8806137912,"U":865545912,"Q":1782,"N":94,"P":4941716.0,"K":4456000.0,"M":0.09829,"S":0.08497},{"Producto":"Gaming F15","Tipo":"Portátil","Marca":"Asus","V":8517499592,"U":1315499592,"Q":1108,"N":94,"P":7687274.0,"K":6500000.0,"M":0.15445,"S":0.08219},{"Producto":"15 Pulgadas Ip1 Athlon","Tipo":"Portátil","Marca":"Lenovo","V":6585570108,"U":2482170108,"Q":1954,"N":94,"P":3370302.0,"K":2100000.0,"M":0.37691,"S":0.06355},{"Producto":"Xiaomi redmi 8","Tipo":"Celular","Marca":"Xiaomi","V":6367914400,"U":849914400,"Q":1780,"N":96,"P":3577480.0,"K":3100000.0,"M":0.13347,"S":0.06145},{"Producto":"MacBook Air","Tipo":"Portátil","Marca":"Apple","V":6033325368,"U":857349368,"Q":1256,"N":94,"P":4803603.0,"K":4121000.0,"M":0.1421,"S":0.05822},{"Producto":"Intel Corei7 ","Tipo":"Pc Mesa","Marca":"Intel","V":5161483346,"U":281263346,"Q":998,"N":94,"P":5171827.0,"K":4890000.0,"M":0.05449,"S":0.04981},{"Producto":"Galaxy jpro","Tipo":"Celular","Marca":"Samsung","V":4949845104,"U":844771344,"Q":996,"N":96,"P":4969724.0,"K":4121560.0,"M":0.17067,"S":0.04776},{"Producto":"JANUS","Tipo":"Pc Mesa","Marca":"Janus","V":4392824184,"U":982076184,"Q":1566,"N":94,"P":2805124.0,"K":2178000.0,"M":0.22356,"S":0.04239},{"Producto":"13ultra","Tipo":"Celular","Marca":"Xiaomi","V":4269152832,"U":235752832,"Q":1204,"N":96,"P":3545808.0,"K":3350000.0,"M":0.05522,"S":0.0412},{"Producto":"ASPIRE 3 ","Tipo":"Portátil","Marca":"Acer","V":4194947718,"U":1021547718,"Q":738,"N":94,"P":5684211.0,"K":4300000.0,"M":0.24352,"S":0.04048},{"Producto":"INTEL CORE i3","Tipo":"Pc Mesa","Marca":"Intel","V":4119431000,"U":614721000,"Q":1510,"N":94,"P":2728100.0,"K":2321000.0,"M":0.14922,"S":0.03975},{"Producto":"iPhone 13 pro max","Tipo":"Celular","Marca":"Apple","V":3701630640,"U":1017530640,"Q":778,"N":96,"P":4757880.0,"K":3450000.0,"M":0.27489,"S":0.03572},{"Producto":"iPhone 11","Tipo":"Celular","Marca":"Apple","V":3335553488,"U":534913488,"Q":1094,"N":96,"P":3048952.0,"K":2560000.0,"M":0.16037,"S":0.03219},{"Producto":"Galaxy s23","Tipo":"Celular","Marca":"Samsung","V":3146356507,"U":74707507,"Q":749,"N":95,"P":4200743.0,"K":4101000.0,"M":0.02374,"S":0.03036},{"Producto":"iPhone 13 pro","Tipo":"Celular","Marca":"Apple","V":3074250550,"U":481450550,"Q":926,"N":96,"P":3319925.0,"K":2800000.0,"M":0.15661,"S":0.02966},{"Producto":"Vivo x80","Tipo":"Celular","Marca":"Vivo","V":2943200000,"U":339600000,"Q":1132,"N":96,"P":2600000.0,"K":2300000.0,"M":0.11538,"S":0.0284},{"Producto":"Xiaomi 13T","Tipo":"Celular","Marca":"Xiaomi","V":2442220000,"U":287320000,"Q":1306,"N":96,"P":1870000.0,"K":1650000.0,"M":0.11765,"S":0.02357},{"Producto":"Apple MacBook ","Tipo":"Portátil","Marca":"Apple","V":2179613308,"U":307813308,"Q":764,"N":94,"P":2852897.0,"K":2450000.0,"M":0.14122,"S":0.02103},{"Producto":"A1","Tipo":"Celular","Marca":"Samsung","V":46208173,"U":1097173,"Q":11,"N":1,"P":4200743.0,"K":4101000.0,"M":0.02374,"S":0.00045}],"tipo":[{"Tipo":"Portátil","V":46876568898,"U":8812952898,"Q":8688,"N":660,"P":5481010.2,"K":4464187.9,"M":0.188,"S":0.45233},{"Tipo":"Celular","V":34276331694,"U":4667057934,"Q":9976,"N":864,"P":3543390.2,"K":3048062.2,"M":0.13616,"S":0.33075},{"Tipo":"Pc Mesa","V":22479876442,"U":2743606442,"Q":5856,"N":376,"P":3911691.8,"K":3461250.0,"M":0.12205,"S":0.21692}],"marca":[{"Marca":"Apple","V":27792445162,"U":3956089162,"Q":6482,"N":570,"P":4074973.1,"K":3430743.9,"M":0.14234,"S":0.26818},{"Marca":"Asus","V":17323637504,"U":2181045504,"Q":2890,"N":188,"P":6314495.0,"K":5478000.0,"M":0.1259,"S":0.16716},{"Marca":"Lenovo","V":16483111104,"U":4553711104,"Q":3158,"N":190,"P":5820953.1,"K":4323157.9,"M":0.27627,"S":0.15905},{"Marca":"Xiaomi","V":13079287232,"U":1372987232,"Q":4290,"N":288,"P":2997762.7,"K":2700000.0,"M":0.10497,"S":0.12621},{"Marca":"Intel","V":9280914346,"U":895984346,"Q":2508,"N":188,"P":3949963.5,"K":3605500.0,"M":0.09654,"S":0.08956},{"Marca":"Samsung","V":8142409784,"U":920576024,"Q":1756,"N":192,"P":4585233.5,"K":4111280.0,"M":0.11306,"S":0.07857},{"Marca":"Janus","V":4392824184,"U":982076184,"Q":1566,"N":94,"P":2805124.0,"K":2178000.0,"M":0.22356,"S":0.04239},{"Marca":"Acer","V":4194947718,"U":1021547718,"Q":738,"N":94,"P":5684211.0,"K":4300000.0,"M":0.24352,"S":0.04048},{"Marca":"Vivo","V":2943200000,"U":339600000,"Q":1132,"N":96,"P":2600000.0,"K":2300000.0,"M":0.11538,"S":0.0284}],"cli":[{"Cliente":"Asociados LTDA","Ciudad":"Bogotá","Transportadora":"Terrestre","Pago":"Crédito","V":43739616368,"U":6839779488,"Q":10092,"N":804,"P":4423651.7,"K":3729344.4,"M":0.15637,"S":0.42206},{"Cliente":"Smart S.A.S","Ciudad":"Medellín","Transportadora":"Fluvial","Pago":"Crédito","V":20886432096,"U":3176917936,"Q":5142,"N":378,"P":4122013.1,"K":3487243.0,"M":0.1521,"S":0.20154},{"Cliente":"Distribuidora Oriente","Ciudad":"Cali","Transportadora":"Terrestre","Pago":"Crédito","V":19515358246,"U":3103030486,"Q":4690,"N":366,"P":4215016.3,"K":3556146.0,"M":0.159,"S":0.18831},{"Cliente":"FullStark","Ciudad":"Bucaramanga","Transportadora":"Aereo","Pago":"Contado","V":19491370324,"U":3103889364,"Q":4596,"N":352,"P":4239542.8,"K":3588635.2,"M":0.15924,"S":0.18808}],"emp":[{"Empleado":"Diego","Area":"Compras","V":12468916035,"U":1936963075,"Q":2711,"N":205,"P":4577013.8,"K":3875967.2,"M":0.15534,"S":0.12032},{"Empleado":"Matias","Area":"Almacen","V":10828781147,"U":1594483627,"Q":2576,"N":201,"P":4192831.3,"K":3588470.0,"M":0.14724,"S":0.10449},{"Empleado":"Liliana","Area":"Gerencia","V":10813613563,"U":1643451803,"Q":2484,"N":197,"P":4427654.9,"K":3761119.2,"M":0.15198,"S":0.10435},{"Empleado":"Alejandra","Area":"Control de calidad","V":10746481941,"U":1698004461,"Q":2423,"N":182,"P":4514952.5,"K":3791909.2,"M":0.15801,"S":0.1037},{"Empleado":"Martha","Area":"Administracion","V":10489264790,"U":1598975230,"Q":2626,"N":211,"P":4176476.2,"K":3529749.6,"M":0.15244,"S":0.10122},{"Empleado":"Juan","Area":"Ventas","V":10240320591,"U":1671430991,"Q":2462,"N":184,"P":4293121.1,"K":3588750.2,"M":0.16322,"S":0.09881},{"Empleado":"Hernan","Area":"Compras","V":9927646495,"U":1579910775,"Q":2309,"N":183,"P":4326406.5,"K":3655532.9,"M":0.15914,"S":0.0958},{"Empleado":"Daniela","Area":"Despachos","V":9457100593,"U":1451827593,"Q":2410,"N":187,"P":4008423.1,"K":3402147.6,"M":0.15352,"S":0.09126},{"Empleado":"Lina","Area":"Ventas","V":9441530676,"U":1567326476,"Q":2289,"N":182,"P":4214944.0,"K":3518573.4,"M":0.166,"S":0.09111},{"Empleado":"Paola","Area":"Logística","V":9219121203,"U":1481243243,"Q":2230,"N":168,"P":4137723.8,"K":3474668.8,"M":0.16067,"S":0.08896}]};
+const nf=v=>Math.round(v).toLocaleString('es-CO'),mm=v=>nf(v/1e6),pc=(v,d=1)=>(v*100).toFixed(d).replace('.',',')+'%';
+const $=s=>document.querySelector(s),ML='Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic'.split(' ');
+D.prod.forEach(p=>p.Producto=p.Producto.trim());
+const T=D.tot,mg=T.U/T.V,cred=D.cli.filter(c=>c.Pago=='Crédito').reduce((a,c)=>a+c.S,0);
+$('#cov').textContent=`Datos del ${D.dmin} al ${D.dmax} · ${nf(T.N)} ventas analizadas (${D.n0-D.n} fila duplicada eliminada)`;
+$('#k').innerHTML=[['Ventas totales',mm(T.V)+' M'],['Utilidad bruta',mm(T.U)+' M'],['Margen bruto',pc(mg)],['Markup sobre costo',pc(T.U/T.C)],['Unidades vendidas',nf(T.Q)],['Ticket por venta',mm(T.V/T.N)+' M'],['Utilidad por unidad',nf(T.U/T.Q)],['Ventas a crédito',pc(cred,0)]].map(k=>`<div class="k"><span>${k[0]}</span><b>${k[1]}</b></div>`).join('');
+function combo(el,items,line){const W=760,H=300,L=56,R=44,T=16,B=44,n=items.length,pw=(W-L-R)/n,mx=Math.max(...items.map(i=>i.hi||i.v))*1.1,y=v=>T+(H-T-B)*(1-v/mx);
+let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Ventas mensuales y previsión">`;
+for(let i=0;i<=4;i++){const v=mx*i/4;s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" class="gl"/><text x="${L-6}" y="${y(v)+4}" class="ax" text-anchor="end">${mm(v)}</text>`}
+items.forEach((d,i)=>{const x=L+i*pw+pw*.18,w=pw*.64;s+=`<rect x="${x}" y="${y(d.v)}" width="${w}" height="${H-B-y(d.v)}" class="b${d.k}"><title>${d.l}: ${mm(d.v)} M</title></rect>`;
+if(d.hi)s+=`<line x1="${x+w/2}" x2="${x+w/2}" y1="${y(d.hi)}" y2="${y(d.lo)}" class="er"/>`;
+s+=`<text x="${x+w/2}" y="${H-B+14}" class="ax" text-anchor="middle">${d.l}</text>`});
+const my=Math.max(...line.filter(v=>v!=null))*1.3,yl=v=>T+(H-T-B)*(1-v/my),pts=line.map((v,i)=>v==null?null:[L+i*pw+pw/2,yl(v)]).filter(Boolean);
+s+=`<polyline points="${pts.map(p=>p.join(',')).join(' ')}" class="ln"/>`+pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" class="dt"/>`).join('')+[0,.5,1].map(f=>`<text x="${W-R+6}" y="${yl(my*f)+4}" class="ax">${pc(my*f,0)}</text>`).join('');
+el.innerHTML=s+'</svg>'}
+const sd=D.fc.V.sd,items=D.mes.map((m,i)=>({l:ML[i]+(i==11?'*':''),v:m.V,k:i==11?'p':'r'})).concat(D.fc.V.f.map((v,i)=>({l:['Dic est.','Ene 23','Feb 23','Mar 23'][i],v,k:'f',lo:v-sd,hi:v+sd})));
+combo($('#c1'),items,D.mes.map(m=>m.M).concat([null,null,null,null]));
+const full=D.mes.slice(0,11),best=[...full].sort((a,b)=>b.V-a.V)[0],worst=[...full].sort((a,b)=>a.V-b.V)[0],avg=full.reduce((a,m)=>a+m.V,0)/11;
+$('#t1').innerHTML=`*Diciembre cubre solo hasta el día 14. Promedio mensual (ene–nov): <b>${mm(avg)} M</b>. Mejor mes: ${ML[+best.mes.slice(5)-1]} (${mm(best.V)} M); más débil: ${ML[+worst.mes.slice(5)-1]} (${mm(worst.V)} M). La recta de tendencia cambia ${mm(D.fc.V.b)} M por mes (${pc(D.fc.V.b/avg)} del promedio), pero la dispersión mensual (±${mm(sd)} M) es mayor que esa pendiente: la tendencia no es concluyente. Previsión de utilidad bruta para dic–mar: ${D.fc.U.f.map(mm).join(' · ')} M.`;
+const mc=m=>`<span class="pill ${m<.08?'lo':m>.2?'hi':''}">${pc(m)}</span>`;
+let acc=0;const P=D.prod;
+tbl($('#tp'),[{h:'Producto',f:r=>r.Producto},{h:'Tipo',f:r=>r.Tipo},{h:'Marca',f:r=>r.Marca},{h:'Ventas (M)',c:'n',f:r=>mm(r.V)},{h:'% ventas',c:'n',f:r=>pc(r.S)},{h:'% acum.',c:'n',f:r=>pc(r.acc)},{h:'ABC',f:r=>r.abc},{h:'Utilidad (M)',c:'n',f:r=>mm(r.U)},{h:'Margen',c:'n',f:r=>mc(r.M)},{h:'Markup',c:'n',f:r=>pc(r.P/r.K-1)}],P.map(r=>{const prev=acc;acc+=r.S;r.acc=acc;r.abc=prev<.8?'A':prev<.95?'B':'C';return r}));
+function tbl(el,cols,rows){el.innerHTML='<table><thead><tr>'+cols.map(c=>`<th class="${c.c||''}">${c.h}</th>`).join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+cols.map(c=>`<td class="${c.c||''}">${c.f(r)}</td>`).join('')+'</tr>').join('')+'</tbody></table>'}
+function hbar(el,it,f,c){const mx=Math.max(...it.map(i=>i.v));el.innerHTML=it.map(i=>`<div class="hr"><span>${i.l}</span><span class="hb"><i class="${c||''}" style="width:${i.v/mx*100}%"></i></span><span class="hv">${f(i.v)}</span></div>`).join('')}
+hbar($('#h1'),D.marca.map(m=>({l:m.Marca,v:m.S})),v=>pc(v));
+hbar($('#h2'),[...D.marca].sort((a,b)=>b.M-a.M).map(m=>({l:m.Marca,v:m.M})),v=>pc(v),'g');
+tbl($('#tc'),[{h:'Cliente',f:r=>r.Cliente},{h:'Ciudad',f:r=>r.Ciudad},{h:'Transporte',f:r=>r.Transportadora},{h:'Pago',f:r=>r.Pago},{h:'Ventas (M)',c:'n',f:r=>mm(r.V)},{h:'% ventas',c:'n',f:r=>pc(r.S)},{h:'Margen',c:'n',f:r=>mc(r.M)},{h:'N.º ventas',c:'n',f:r=>nf(r.N)}],D.cli);
+const hhi=D.cli.reduce((a,c)=>a+c.S*c.S,0)*1e4;
+$('#t2').textContent=`HHI de clientes = ${nf(hhi)} (por encima de 2.500 se considera concentración alta). El cliente principal pesa ${pc(D.cli[0].S,0)} de las ventas.`;
+hbar($('#h3'),D.emp.map(e=>({l:e.Empleado+' ('+e.Area+')',v:e.V})),v=>mm(v));
+hbar($('#h4'),[...D.emp].sort((a,b)=>b.M-a.M).map(e=>({l:e.Empleado,v:e.M})),v=>pc(v),'g');
+const gs=$('#gs');function esc(){const g=gs.value/100;$('#gv').textContent=gs.value.replace('.',',')+' %';const u=T.U-g*T.V;$('#eo').innerHTML=`Utilidad operativa estimada: <b>${mm(u)} M</b> · margen operativo <b>${pc(u/T.V)}</b>. Equilibrio: los gastos no pueden pasar de <b>${pc(mg)}</b> de las ventas.`}gs.oninput=esc;esc();
+const low=P.filter(p=>p.M<mg/2&&p.V>1e9),ls=low.reduce((a,p)=>a+p.S,0),lu=low.reduce((a,p)=>a+p.U,0)/T.U,mejor=[...P].sort((a,b)=>b.M-a.M)[0],ea=D.emp.map(e=>e.M);
+$('#ins').innerHTML=[
+`<b>Margen bruto de ${pc(mg)}</b> con rango entre productos de ${pc(Math.min(...P.filter(p=>p.V>1e9).map(p=>p.M)))} y ${pc(mejor.M)} (${mejor.Producto}). Es un margen delgado para un negocio de tecnología: los gastos operativos lo pueden consumir casi todo.`,
+`<b>Productos de margen bajo (< ${pc(mg/2,0)}):</b> ${low.map(p=>p.Producto).join(', ')}. Suman ${pc(ls)} de las ventas pero solo ${pc(lu)} de la utilidad. Acción: renegociar costo, subir precio o reducir inventario.`,
+`<b>Concentración:</b> ${D.cli[0].Cliente} representa ${pc(D.cli[0].S,0)} de las ventas (HHI ${nf(hhi)}). Perderlo sería un golpe fuerte; conviene diversificar.`,
+`<b>Crédito:</b> ${pc(cred,0)} de las ventas es a crédito. Sin fechas de cobro no se puede medir la cartera: agregar fecha de pago a la base es la mejora más valiosa.`,
+`<b>Tendencia:</b> ventas volátiles con pico en ${ML[+best.mes.slice(5)-1]} y caída en julio y diciembre; la pendiente no es estadísticamente clara. Planear inventario con la banda de previsión, no con un solo número.`,
+`<b>Vendedores:</b> margen casi igual entre todos (${pc(Math.min(...ea))}–${pc(Math.max(...ea))}); la diferencia está en la mezcla de productos y clientes, no en la persona. Si se paga comisión, ligarla al margen.`
+].map(t=>`<li>${t}</li>`).join('');
+</script></body></html>
